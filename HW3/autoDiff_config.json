@@ -1,0 +1,10 @@
+{
+    "var": {
+        "x1": 1,
+        "x2": 2,
+        "x3": 3
+    },
+    "randomValue": true,
+    "exp": "(sin(x1+1)+cos(2*x2))*tan(log(x3))+(sin(x2+1)+cos(2*x1))*exp(1+sin(x3))",
+    "test_exp": "(np.sin(x1+1)+np.cos(2*x2))*np.tan(np.log(x3))+(np.sin(x2+1)+np.cos(2*np.x1))*np.exp(1+np.sin(x3))"
+}
