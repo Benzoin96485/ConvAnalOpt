@@ -24,4 +24,4 @@ with open("HW3/autoDiff_config.json") as f:
     dy_eval = (value2 - value1) / t
     dy_calc = (np.dot(grad, d))
     print(dy_eval - dy_calc)
-    
+    print("如果这两个数相差很小，说明测试成功")

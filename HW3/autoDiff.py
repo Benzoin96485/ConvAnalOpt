@@ -41,10 +41,10 @@ class ComputeGraph:
 
 
 class Node:
-    def __init__(self, value, preList=[], name=None):
+    def __init__(self, value, preList=[], graph=None):
         self.preList = preList
         self.value = value
-        self.graph = None
+        self.graph = graph
         self.grad = 0
         self.index = -1
 
@@ -118,6 +118,14 @@ def exp(x):
 
 def log(x):
     result = Node(value=np.log(x.value), preList=[(x.index, 1 / x.value)])
+    x.graph.addNodes(result)
+    return result
+
+def relu(x):
+    if x.value > 0:
+        result = Node(value=x.value, preList=[(x.index, 1)])
+    else:
+        result = Node(value=0, preList=[(x.index, 0)])
     x.graph.addNodes(result)
     return result
 

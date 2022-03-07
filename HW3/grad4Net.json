@@ -1,0 +1,28 @@
+{
+    "initValue": [[0.1, 0.2, 0.3]],
+    "layers": [
+        {
+            "type": "conv1d",
+            "inChannel": 1,
+            "padding": 1,
+            "kernelWidth": 3,
+            "outChannel": 2,
+            "res": true
+        },
+        {
+            "type": "relu",
+            "inShape": [2, 3]
+        },
+        {
+            "type": "linear",
+            "inWidth": 6,
+            "outWidth": 1
+        },
+        {
+            "type": "relu",
+            "inShape": [1]
+        }
+    ],
+    "lossFunc": "l2",
+    "label": [1]
+}
