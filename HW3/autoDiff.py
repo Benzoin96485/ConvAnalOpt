@@ -1,8 +1,7 @@
 # HW3-4: Write an automatic differentiation program that works on a given expression
 
 import numpy as np
-import json
-np.random.seed(114514)
+np.random.seed(1919810)
 
 
 class ComputeGraph:
@@ -18,6 +17,17 @@ class ComputeGraph:
         self.nodes.append(node)
         if start == True:
             self.startNodes.append(node)
+
+    def forward(self, config):
+        for varName, value in config["var"].items():
+            if config["randomValue"]:
+                value = np.random.rand()
+                config["var"]["varName"] = value
+            print(f"{varName} = {value}")
+            exec(f"{varName} = Node(value={value})")
+            self.addNodes(eval(f"{varName}"), start=True)
+        return eval(config["exp"]).value
+    
 
     def backward(self):
         for i in range(self.nodeNum):
@@ -112,20 +122,5 @@ def log(x):
     return result
 
 
-def createG(computeGraph, config):
-    for varName, value in config["var"].items():
-        if config["randomValue"]:
-            value = np.random.rand()
-        print(f"{varName} = {value}")
-        exec(f"{varName} = Node(value={value})")
-        computeGraph.addNodes(eval(f"{varName}"), start=True)
-    eval(config["exp"])
-
-
 if __name__ == "__main__":
-    with open("HW3/autoDiff_config.json") as f:
-        config = json.load(f)
-    G = ComputeGraph()
-    createG(G, config)
-    G.backward()
-    print(G.finalGrad())
+    pass
