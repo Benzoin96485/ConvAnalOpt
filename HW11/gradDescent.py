@@ -51,34 +51,65 @@ class GD:
         plt.plot(range(self.L), self.sls)
         plt.show()
 
-if __name__ == "__main__":
+def search_param():
     plt.figure()
-    for seed in range(114514, 114517):
+    plt.xlabel(r"$\beta$")
+    plt.ylabel("L")
+    avgLs = np.zeros(99)
+    for seed in range(114514, 114524):
         np.random.seed(seed)
         A = np.random.randn(3,3)
-        print(A)
         x0 = np.random.randn(3)
-        print(x0)
         betas = np.linspace(0.01, 0.99, 99)
         Ls = []
         for beta in betas:
             gd = GD(A, x0, alpha=0.5, beta=beta, eta=1e-6)
             gd.opt()
             Ls.append(gd.L)
+        avgLs += np.array(Ls)
         plt.plot(betas, Ls)
+    plt.plot(betas, avgLs / 10, linewidth=3)
+    print(betas[list(avgLs).index(min(avgLs))])
     plt.show()
     plt.figure()
-    for seed in range(114514, 114517):
+    plt.xlabel(r"$\alpha$")
+    plt.ylabel("L")
+    avgLs = np.zeros(99)
+    for seed in range(114514, 114524):
         np.random.seed(seed)
         A = np.random.randn(3,3)
-        print(A)
         x0 = np.random.randn(3)
-        print(x0)
         alphas = np.linspace(0.01, 0.99, 99)
         Ls = []
         for alpha in alphas:
             gd = GD(A, x0, alpha=alpha, beta=0.9, eta=1e-6)
             gd.opt()
             Ls.append(gd.L)
+        avgLs += np.array(Ls)
         plt.plot(alphas, Ls)
+    plt.plot(alphas, avgLs / 10, linewidth=3)
+    print(alphas[list(avgLs).index(min(avgLs))])
     plt.show()
+
+def plot_converge(alpha, beta):
+    np.random.seed(114514)
+    A = np.random.randn(3,3)
+    x0 = np.random.randn(3)
+    gd = GD(A, x0, alpha, beta, eta=1e-6)
+    gd.opt()
+    plt.figure(figsize=(16, 6))
+    plt.subplot(1, 2, 1)
+    ax = plt.gca()
+    ax.set_xlabel("i")
+    ax.set_ylabel(r"$\|t\Delta x\|_{2}$")
+    plt.plot(range(gd.L), np.log(np.array(gd.sls)))
+    plt.subplot(1, 2, 2)
+    ax = plt.gca()
+    ax.set_xlabel("i")
+    ax.set_ylabel("$\mathrm{lg}(f(x)-p^{*})$")
+    plt.plot(range(gd.L), np.log(np.array(gd.fs) - 6))
+    plt.tight_layout()
+    plt.show()
+
+if __name__ == "__main__":
+    plot_converge(alpha=0.56, beta=0.85)
