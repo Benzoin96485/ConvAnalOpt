@@ -1,5 +1,6 @@
-# HW3-3: a program for computing the gradient of error function V with respect
-# to the weights of a neural network with arbitrary topology
+'''
+HW3-3: A program for computing the gradient of error function V with respect to the weights of a neural network with arbitrary topology
+'''
 
 from turtle import forward
 import numpy as np

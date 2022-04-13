@@ -1,5 +1,5 @@
 '''
-HW 11-3: Gradient Descent Algorithm
+HW 11-3: Gradient Descent Algorithm for vectorize cosh function minimization
 '''
 import numpy as np
 import matplotlib.pyplot as plt

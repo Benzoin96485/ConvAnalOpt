@@ -1,4 +1,6 @@
-# HW3-4: Write an automatic differentiation program that works on a given expression
+'''
+HW3-4: An automatic differentiation program that works on a given expression
+'''
 
 import numpy as np
 np.random.seed(1919810)
