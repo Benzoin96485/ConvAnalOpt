@@ -1,3 +1,6 @@
+'''
+HW 11-3: Gradient Descent Algorithm
+'''
 import numpy as np
 import matplotlib.pyplot as plt
 
