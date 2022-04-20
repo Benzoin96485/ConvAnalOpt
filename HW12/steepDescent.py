@@ -32,11 +32,11 @@ class SD:
             return True
         fx = self.f(self.x)
         t = 1
-        while self.f(self.x + t * dx) > fx - self.alpha * t * df2:
+        while self.f(self.x + t * dx) > fx + self.alpha * t * np.dot(df, dx):
             t *= self.beta
         self.x = self.x + t * dx
         self.fs.append(fx)
-        self.sls.append(t * np.sqrt(df2))
+        self.sls.append(t * np.sqrt(np.dot(dx, dx)))
         return False
 
     def opt(self):
@@ -59,14 +59,15 @@ def search_param():
     plt.figure()
     plt.xlabel(r"$\beta$")
     plt.ylabel("L")
-    avgLs = np.zeros(99)
+    avgLs = np.zeros(81)
     for seed in range(114514, 114524):
         np.random.seed(seed)
         A = np.random.randn(3,3)
         x0 = np.random.randn(3)
-        betas = np.linspace(0.01, 0.99, 99)
+        betas = np.linspace(0.1, 0.9, 81)
         Ls = []
         for beta in betas:
+            print(f"beta: {beta}")
             sd = SD(A, x0, alpha=0.5, beta=beta, eta=1e-6)
             sd.opt()
             Ls.append(sd.L)
@@ -80,14 +81,15 @@ def search_param():
     plt.figure()
     plt.xlabel(r"$\alpha$")
     plt.ylabel("L")
-    avgLs = np.zeros(99)
+    avgLs = np.zeros(81)
     for seed in range(114514, 114524):
         np.random.seed(seed)
         A = np.random.randn(3,3)
         x0 = np.random.randn(3)
-        alphas = np.linspace(0.01, 0.99, 99)
+        alphas = np.linspace(0.1, 0.9, 81)
         Ls = []
         for alpha in alphas:
+            print(f"alpha: {alpha}")
             sd = SD(A, x0, alpha=alpha, beta=best_beta, eta=1e-6)
             sd.opt()
             Ls.append(sd.L)
@@ -98,6 +100,7 @@ def search_param():
     print(best_alpha)
     plt.savefig("HW12/L_alpha.png")
     plt.show()
+    print(f"best: alpha: {best_alpha}, beta: {best_beta}")
     return best_alpha, best_beta
 
 def plot_converge(alpha, beta):
@@ -111,15 +114,15 @@ def plot_converge(alpha, beta):
     ax = plt.gca()
     ax.set_xlabel("i")
     ax.set_ylabel(r"$\|t\Delta x\|_{2}$")
-    plt.plot(range(sd.L), np.log(np.array(sd.sls)))
+    plt.plot(range(sd.L), np.log10(np.array(sd.sls)))
     plt.subplot(1, 2, 2)
     ax = plt.gca()
     ax.set_xlabel("i")
     ax.set_ylabel("$\mathrm{lg}(f(x)-p^{*})$")
-    plt.plot(range(sd.L), np.log(np.array(sd.fs) - 6))
+    plt.plot(range(sd.L), np.log10(np.array(sd.fs) - 6))
     plt.tight_layout()
     plt.savefig("HW12/converge.png")
     plt.show()
 
 if __name__ == "__main__":
-    plot_converge(0.51, 0.49)
+    plot_converge(*search_param())
