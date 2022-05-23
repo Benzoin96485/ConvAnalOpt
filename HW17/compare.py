@@ -47,10 +47,6 @@ class Opt:
     def dfe(self, z):
         return self.zero_space.T @ self.df(self.spec_sol + self.zero_space @ z)
 
-    def proj_dual(self, l):
-        l = l[:100]
-        return -l / np.dot(self.A_dual, l)
-
     def _lsearch(self, x, d, f, g, func):
         t = 1
         while func(x + t * d) > f + self.alpha * t * np.dot(d, g):
@@ -100,25 +96,28 @@ class Opt:
         # print(np.max(self.A @ self.x - self.b))
         self.fs.append(f)
         # if np.dot(l, l) < self.eta2:
-        if np.dot(l, l) < self.eta2:
+        if np.dot(l, l) < self.eta2 or step > 5000:
             return False
 
         if method == "dual_asc":
-            alpha = self._lsearch(self.x, d, L, g, self.Lx)
-            self.x += alpha * d
+            if self.prec:
+                self.x = minimize(self.Lx, self.x, jac=self.dLx).x
+            else:
+                alpha = self._lsearch(self.x, d, L, g, self.Lx)
+                self.x += alpha * d
             self.v += self.aug * (self.A @ self.x - self.b)
         else:
             alpha = self._lsearch(self.x, d, f, g, self.f)
             self.x += alpha * d
         return True
 
-    def opt(self, F, alpha, beta, eta, method, aug=0.000001):
+    def opt(self, F, alpha, beta, eta, method, aug=0.000001, prec=False):
         self.x = F.proj(rand(F.n))
         self.v = np.zeros(F.p)
         self.f = F.f; self.n = F.n; self.p = F.p
         self.A = F.A; self.b = F.b; self.P = F.P
         self.df = F.df; self.ddf = F.ddf; self.aug = aug
-        
+        self.prec = prec
         u, s, vt = svd(self.A)
         self.zero_space = vt[self.p:].T
         self.fs = []
@@ -141,15 +140,32 @@ class Opt:
         plt.plot(np.linspace(1, self.L, self.L), np.log10(abs(np.array(self.fs) - self.pstar) + 1e-16))
         plt.show()
 
-def test_F(method):
+def test_F(A,b,method, **kwarg):
     opt = Opt()
-    func = F()
-    opt.opt(F=func, alpha=0.25, beta=0.75, eta=1e-7, method=method)
-    
-    opt.plot_fi()
+    func = F(A,b,random=False)
+    opt.opt(F=func, alpha=0.25, beta=0.75, eta=1e-5, method=method, **kwarg)
+    ans = opt.fs[:]
+    del opt
+    return ans
 
 if __name__ == "__main__":
-    test_F(method="dual_asc")
+    A = rand(100, 500)
+    b = rand(100)
+    l1 = test_F(A, b, method="proj_grad")
+    l2 = test_F(A, b, method="eliminate")
+    l3 = test_F(A, b, method="newton")
+    l4 = test_F(A, b, method="dual_asc", aug=1e-6)
+    l5 = test_F(A, b, method="dual_asc", aug=1e-3)
+    pstar = 6.215668419620234
+    plt.figure()
+    plt.plot(range(len(l1)), np.log10(abs(np.array(l1) - pstar) + 1e-16), label="proj_grad", linewidth=3)
+    plt.plot(range(len(l2)), np.log10(abs(np.array(l2) - pstar) + 1e-16), label="eliminate")
+    plt.plot(range(len(l3)), np.log10(abs(np.array(l3) - pstar) + 1e-16), label="newton")
+    plt.plot(range(len(l4)), np.log10(abs(np.array(l4) - pstar) + 1e-16), label="dual_asc, aug_L, beta=1e-6")
+    plt.plot(range(len(l5)), np.log10(abs(np.array(l5) - pstar) + 1e-16), label="dual_asc, aug_L, beta=1e-3")
+    plt.legend()
+    plt.savefig("HW17/compare.png")
+    plt.show()
 
 """
 6.215668419622828
