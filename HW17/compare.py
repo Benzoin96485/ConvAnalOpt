@@ -1,5 +1,5 @@
 '''
-HW 14-2: comparation between several constrained optimization algorithm
+HW 17-4: comparation between several constrained optimization algorithm
 '''
 import numpy as np
 import matplotlib.pyplot as plt
