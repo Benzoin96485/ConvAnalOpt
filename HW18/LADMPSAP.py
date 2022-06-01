@@ -82,11 +82,11 @@ class Opt:
         Z = self.f1_prox(W1, self.beta * self.eta1)
 
         # update E
-        W2 = self.E - self.A2.T @ self.lnew(Z, self.E, self.Y) / (self.beta * self.eta2)
+        W2 = self.E - self.A2.T @ self.lnew(self.Z, self.E, self.Y) / (self.beta * self.eta2)
         E = self.f2_prox(W2, self.beta * self.eta2)
 
         # update Y
-        W3 = self.Y - self.A3.T @ self.lnew(Z, E, self.Y) / (self.beta * self.eta3)
+        W3 = self.Y - self.A3.T @ self.lnew(self.Z, self.E, self.Y) / (self.beta * self.eta3)
         Y = self.f3_prox(W3)
 
         # update lamda
@@ -169,8 +169,8 @@ if __name__ == "__main__":
     Y0 = np.zeros((300, 300))
     lamda = np.zeros((501, 300))
     mu = 1
-    beta0 = 1e-4
-    beta_max = 0.1
+    beta0 = 1
+    beta_max = 10000
     rho0 = 2
     eps1 = 1e-4
     eps2 = 1e-4
