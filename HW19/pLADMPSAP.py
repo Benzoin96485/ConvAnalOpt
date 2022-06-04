@@ -16,7 +16,7 @@ class F:
         self.y = y
         self.s = y.shape[0]
         self.T0 = 2
-        self.T = norm(X, ord=2, axis=0) / self.s + 2
+        self.T = norm(X, ord=2, axis=0) / self.s / 4 + 2
         self.eta0 = self.s ** 2 * (self.s + 2) + 2
         self.eta = (self.s + 2) * np.array([1] * self.s) + 2
 
@@ -133,10 +133,10 @@ def test_F_ADM(X, y, w0, W0, Lamda0, bbeta0):
 
 if __name__ == "__main__":
     X = randn(100, 200)
-    y = randint(0, high=2, size=200)
+    y = randint(0, high=2, size=200) * 2.0 - 1
     w0 = np.zeros(100)
     W0 = np.zeros((100, 200))
     Lamda0 = np.zeros((100, 200))
     bbeta0 = 0.001
-    # test_F_grad(X, y, w0)
+    test_F_grad(X, y, w0)
     test_F_ADM(X, y, w0, W0, Lamda0, bbeta0)
