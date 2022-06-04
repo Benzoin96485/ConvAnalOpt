@@ -18,4 +18,24 @@
   - `L-BFGS.py`，在 Rosenbrock 函数上实现了有限内存的 BFGS 型拟牛顿算法
   - `majMin.py`，使用超优极小化（majorization minimization）方法优化带 L1 罚函数的最小二乘问题
 - HW17
-  - `compare.py`，比较了一些约束优化算法的性能
+  - `compare.py`，在 log-sum-exp 函数上比较了一些约束优化算法的性能，包括投影梯度下降（projection gradient descent)、消除线性约束的算法、牛顿法和对偶上升（dual ascent）法
+- HW18
+  - `penalty.py`，在梯度下降的基础上使用绝对值型罚函数和 CB 型罚函数解决带约束的最小二乘问题
+  - `FW.py`，在最小二乘问题上比较 FW 算法和投影梯度下降法的性能
+  - `LADMAP.py` 在图构造问题上实现 LADMAP（linearized alternating descent method with adaptive penalty）算法
+  - `LADMPSAP.py` 在图构造问题上实现 LADMPSAP（linearized alternating descent method with parallel splitting and adaptive penalty）算法
+- HW19
+  - `pLADMPSAP.py` 在逻辑回归问题上实现 pLADMPSAP （proximal linearized alternating descent method with parallel splitting and adaptive penalty）算法，并与梯度下降作比较
+  - `BCD4Dict.py` 在字典学习问题上实现了块坐标下降（block coordinate descent）算法
+  - `BCD4LR.py` 在稀疏矩阵填充问题上实现了块坐标下降（block coordinate descent）算法
+- HW20
+  - `Stochastic.py` 在逻辑回归问题上比较了多种随机优化算法的性能，包括
+    - SGD（stochastic gradient descent）
+    - SVRG（stochastic variance reduced gradient）
+    - Momentum
+    - NAG（Nesterov accelerated gradient）
+    - AdaGrad（adaptive gradient）
+    - AdaDelta
+    - Adam（adaptive moment estimation）
+    - Nadam（Nesterov accelerated adaptive moment estimation）
+    - RCD（Randomized coordinate descent）
