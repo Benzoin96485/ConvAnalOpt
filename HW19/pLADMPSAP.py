@@ -132,11 +132,11 @@ def test_F_ADM(X, y, w0, W0, Lamda0, bbeta0):
     return ans
 
 if __name__ == "__main__":
-    X = randn(100, 200)
-    y = randint(0, high=2, size=200) * 2.0 - 1
+    X = randn(100, 1000)
+    y = randint(0, high=2, size=1000) * 2.0 - 1
     w0 = np.zeros(100)
     W0 = np.zeros((100, 200))
     Lamda0 = np.zeros((100, 200))
     bbeta0 = 0.001
     test_F_grad(X, y, w0)
-    test_F_ADM(X, y, w0, W0, Lamda0, bbeta0)
+    # test_F_ADM(X, y, w0, W0, Lamda0, bbeta0)

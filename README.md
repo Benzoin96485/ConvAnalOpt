@@ -39,3 +39,6 @@
     - Adam（adaptive moment estimation）
     - Nadam（Nesterov accelerated adaptive moment estimation）
     - RCD（Randomized coordinate descent）
+- HW21
+  - `AGD.py` 在逻辑回归问题上实现了加速梯度下降（accelerated gradient descent）及其回溯和单调版本
+  - `APenalty.py` 在线性约束的 log-sum-exp 函数上实现了加速罚函数法（accelerated penalty method）
